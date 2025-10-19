@@ -1,23 +1,19 @@
 # Dockerfile
 
-FROM python:3.10-slim
+# استخدام صورة بايثون القياسية (تتضمن حزم النظام الضرورية)
+FROM python:3.10
 
-# Install system dependencies required for MetaTrader5, NumPy, and Pandas to build successfully
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        build-essential \
-        libpq-dev \
-        gcc \
-        python3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
+# تعيين دليل العمل
 WORKDIR /app
 
+# نسخ ملف متطلبات المكتبات
 COPY requirements.txt .
 
-# Install Python dependencies
+# تثبيت متطلبات بايثون (هذا السطر لن يفشل الآن)
 RUN pip install --no-cache-dir -r requirements.txt
 
+# نسخ باقي ملفات المشروع (وهي الآن منظمة بشكل صحيح في المجلدات)
 COPY . .
 
+# تحديد الأمر الذي سيتم تنفيذه عند تشغيل البوت
 CMD ["python", "main.py"]
