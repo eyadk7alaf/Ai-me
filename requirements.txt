@@ -1,6 +1,6 @@
 python-telegram-bot
+metaapi-python-sdk
 python-dotenv
 apscheduler
 pandas
 numpy
-
