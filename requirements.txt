@@ -1,6 +1,6 @@
 python-telegram-bot
-MetaTrader5
 python-dotenv
 apscheduler
 pandas
 numpy
+# يتم تثبيت MetaTrader5 كخطوة منفصلة لتجنب مشاكل البناء
