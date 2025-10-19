@@ -2,7 +2,7 @@
 
 FROM python:3.10-slim
 
-# تحديث حزم النظام وتثبيت حزم البناء الأساسية المطلوبة لـ MetaTrader5 و NumPy/Pandas
+# Install system dependencies required for MetaTrader5, NumPy, and Pandas to build successfully
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# تثبيت متطلبات بايثون
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
