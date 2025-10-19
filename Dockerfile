@@ -1,22 +1,30 @@
 # Dockerfile
 
-FROM python:3.10
+# استخدام صورة بايثون مستقرة تعتمد على Debian/Buster
+FROM python:3.10-slim-buster
 
-# إضافة متغير بيئة عشوائي لتجاوز الـ Cache بشكل إجباري
-ARG CACHE_BREAKER=1
+# تحديث حزم النظام قبل تثبيت بايثون (حاسم لحل مشاكل التبعيات)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
+# إضافة متغير عشوائي لتجاوز الـ Cache بشكل إجباري
+ARG CACHE_BREAKER=2
 
 # 1. تحديث pip
 RUN pip install --upgrade pip
 
-# 2. تثبيت المكتبات
+# 2. تثبيت المكتبات (باستخدام force-reinstall لضمان تثبيت نظيف)
 COPY requirements.txt .
-# استخدام الأمر --no-cache-dir و `--force-reinstall` لضمان تثبيت نظيف
 RUN pip install --no-cache-dir --force-reinstall -r requirements.txt
 
 # 3. نسخ باقي ملفات المشروع
 COPY . .
 
-# أمر التشغيل
-CMD ["python", "main.py"]
+# تعيين منفذ التشغيل (مطلب أساسي لـ Flask/Railway)
+ENV PORT 5000
+
+# أمر التشغيل: تشغيل تطبيق الويب الجديد
+CMD ["python", "app.py"]
